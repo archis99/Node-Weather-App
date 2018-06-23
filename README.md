@@ -3,7 +3,7 @@ A simple weather API based on Node & Express.The app consumes google-map-api and
 some general info about current cliamte condition based on the address provided.
 
 ## Getting Started
-Download the project from [here] (https://github.com/archis99/Node-Weather-App)
+Download the project from [here](https://github.com/archis99/Node-Weather-App)
 
 ### Prerequisites
 You need to have Google map api key and Dark sky weather secret key.
