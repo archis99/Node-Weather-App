@@ -7,7 +7,7 @@ const app = express();
 
 var formattedAddress = '';
 
-app.get('/weather',(req,res) => {
+app.get('/',(req,res) => {
     var address = req.query.address;
 
     if (address === '') {
