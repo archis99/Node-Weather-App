@@ -12,37 +12,45 @@ app.get('/',(req,res) => {
 
     if (address === '') {
         res.send({
-            "Error message": "Provide an address or ZipCode"
+            Error : "Provide an address or ZipCode"
         });
     } else if (_.size(address) === 0) {
         res.send({
-            "Error message": "Give 'address' query string after the url"
+            Error : "Give 'address' query string after the url"
         });
     } else {
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${keys.mapApiKey}`)
         .then((response) => {
             if (response.data.status === 'ZERO_RESULTS') {
                 res.send({
-                    "Error message": "Give a proper address"
+                    Error : "Give a proper address"
                 });
             } else {
+                //console.log(JSON.stringify(response.data, undefined, 1));
                 formattedAddress = response.data.results[0].formatted_address;
                 var lat = response.data.results[0].geometry.location.lat;
                 var lng = response.data.results[0].geometry.location.lng;
 
-                return axios.get(`https://api.darksky.net/forecast/${keys.weatherKey}/${lat},${lng}?exclude=hourly,daily&units=si`);
+                return axios.get(`https://api.darksky.net/forecast/${keys.weatherKey}/${lat},${lng}?exclude=hourly,daily&units=auto`);
             }
         }).then((response) => {
             if (response === undefined) {
                 throw new Error('Proper address was not given');
             } else {
+                //console.log(JSON.stringify(response.data, undefined, 1));
                 var curTemp = response.data.currently.temperature;
                 var feelTemp = response.data.currently.apparentTemperature;
-                
+                var humidity = response.data.currently.humidity;
+                var windSpeed = response.data.currently.windSpeed;
+                var condition = response.data.currently.summary;
+
                 res.send({
                     "Place" : formattedAddress,
                     "Current Temperature": curTemp,
-                    "Feels Like": feelTemp
+                    "Feels Like": feelTemp,
+                    "Humidity" : humidity,
+                    "Wind Speed" : windSpeed,
+                    "Current Condition": condition
                 });
             }
             
