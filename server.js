@@ -26,7 +26,7 @@ app.get('/',(req,res) => {
                     Error : "Give a proper address"
                 });
             } else {
-                //console.log(JSON.stringify(response.data, undefined, 1));
+                
                 formattedAddress = response.data.results[0].formatted_address;
                 //Using ES6 Object Destructuring
                 var {lat, lng} = response.data.results[0].geometry.location;
