@@ -28,8 +28,8 @@ app.get('/',(req,res) => {
             } else {
                 //console.log(JSON.stringify(response.data, undefined, 1));
                 formattedAddress = response.data.results[0].formatted_address;
-                var lat = response.data.results[0].geometry.location.lat;
-                var lng = response.data.results[0].geometry.location.lng;
+                //Using ES6 Object Destructuring
+                var {lat, lng} = response.data.results[0].geometry.location;
 
                 return axios.get(`https://api.darksky.net/forecast/${keys.weatherKey}/${lat},${lng}?exclude=hourly,daily&units=auto`);
             }
