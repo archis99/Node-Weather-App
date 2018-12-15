@@ -25,6 +25,9 @@ app.get('/',(req,res) => {
                 res.send({
                     Error : "Give a proper address"
                 });
+            } else if (response.data.status === 'OVER_QUERY_LIMIT') {
+                let err_msg = "Oops!!" + response.data.error_message;
+                res.end(err_msg);
             } else {
                 
                 formattedAddress = response.data.results[0].formatted_address;
@@ -35,7 +38,7 @@ app.get('/',(req,res) => {
             }
         }).then((response) => {
             if (response === undefined) {
-                throw new Error('Proper address was not given');
+                throw new Error("Google Map API couldn't fetch details");
             } else {
                 //console.log(JSON.stringify(response.data, undefined, 1));
                 var curTemp = response.data.currently.temperature;
