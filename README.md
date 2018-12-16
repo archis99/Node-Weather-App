@@ -22,7 +22,7 @@ Then run the project with command `npm start`.
 
 To see api response, in browser hit the link `http://localhost:port/fetchWeatherDetails?address="some address"`
 
-##Heroku
+## Heroku
 
 Currently this service is deployed in Heroku. Visit the link `https://node-weather-appv1.herokuapp.com/fetchWeatherDetails?address=`
 
