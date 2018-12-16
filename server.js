@@ -1,65 +1,37 @@
+"use strict";
+
 const axios = require('axios');
-const keys = require('./keys/key');
 const express = require('express');
 const _ = require('underscore');
+const url = require('./constants/url');
+const err = require('./constants/error');
+const keys = require('./keys/key');
+const mapApiHandler = require('./handler/googleMapApi');
+const darkSkyApiHandler = require('./handler/darkSkyApi');
 
 const app = express();
 
-var formattedAddress = '';
-
 app.get('/fetchWeatherDetails',(req,res) => {
-    var address = req.query.address;
+    //Get query string value
+    let address = req.query.address;
 
     if (address === '') {
         res.send({
-            Error : "Provide an address or ZipCode"
+            Error : err.NO_ADDRESS
         });
     } else if (_.size(address) === 0) {
         res.send({
-            Error : "Give 'address' query string after the url"
+            Error : err.NO_ADDRESS_QUERY_STRING
         });
     } else {
-        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${keys.mapApiKey}`)
+        axios.get(`${url.GOOGLE_MAP_API}?address=${address}&key=${keys.mapApiKey}`)
         .then((response) => {
-            if (response.data.status === 'ZERO_RESULTS') {
-                res.send({
-                    Error : "Give a proper address"
-                });
-            } else if (response.data.status === 'OVER_QUERY_LIMIT') {
-                let err_msg = "Oops!!" + response.data.error_message;
-                res.end(err_msg);
-            } else if (response.data.results !== undefined) {
-                
-                formattedAddress = response.data.results[0].formatted_address;
-                //Using ES6 Object Destructuring
-                var {lat, lng} = response.data.results[0].geometry.location;
-
-                return axios.get(`https://api.darksky.net/forecast/${keys.weatherKey}/${lat},${lng}?exclude=hourly,daily&units=auto`);
-            }
+            return mapApiHandler(res, response);
         }).then((response) => {
-            if (response === undefined) {
-                throw new Error("Google Map API couldn't fetch details");
-            } else {
-                //console.log(JSON.stringify(response.data, undefined, 1));
-                var curTemp = response.data.currently.temperature;
-                var feelTemp = response.data.currently.apparentTemperature;
-                var humidity = response.data.currently.humidity;
-                var windSpeed = response.data.currently.windSpeed;
-                var condition = response.data.currently.summary;
-
-                res.send({
-                    "Place" : formattedAddress,
-                    "Current Temperature": curTemp,
-                    "Feels Like": feelTemp,
-                    "Humidity" : humidity,
-                    "Wind Speed" : windSpeed,
-                    "Current Condition": condition
-                });
-            }
-            
+            darkSkyApiHandler(res, response);
         })
         .catch((error) => {
-            console.log(`ERROR`);
+            console.log(error);
             res.end();
         });
     }
