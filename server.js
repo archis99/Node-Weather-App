@@ -59,7 +59,8 @@ app.get('/fetchWeatherDetails',(req,res) => {
             
         })
         .catch((error) => {
-            console.log(error);
+            console.log(`ERROR`);
+            res.end();
         });
     }
 });
