@@ -20,6 +20,10 @@ module.exports = {
 
 Then run the project with command `npm start`.
 
-To see api response, in browser hit the link `http://localhost:port/?address="some address"`
+To see api response, in browser hit the link `http://localhost:port/fetchWeatherDetails?address="some address"`
+
+##Heroku
+
+Currently this service is deployed in Heroku. Visit the link `https://node-weather-appv1.herokuapp.com/fetchWeatherDetails?address=`
 
 Enjoy.
