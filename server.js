@@ -7,7 +7,7 @@ const app = express();
 
 var formattedAddress = '';
 
-app.get('/',(req,res) => {
+app.get('/fetchWeatherDetails',(req,res) => {
     var address = req.query.address;
 
     if (address === '') {
@@ -28,7 +28,7 @@ app.get('/',(req,res) => {
             } else if (response.data.status === 'OVER_QUERY_LIMIT') {
                 let err_msg = "Oops!!" + response.data.error_message;
                 res.end(err_msg);
-            } else {
+            } else if (response.data.results !== undefined) {
                 
                 formattedAddress = response.data.results[0].formatted_address;
                 //Using ES6 Object Destructuring
