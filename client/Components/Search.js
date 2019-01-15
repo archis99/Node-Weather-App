@@ -103,7 +103,7 @@ class Search extends React.Component {
                         feelsLike={this.state.feelsLike}
                         humidity={this.state.humidity}
                         windSpeed={this.state.windSpeed}
-                        currCondition={this.state.windSpeed}
+                        currCondition={this.state.currCondition}
                         error={this.state.error}
                     />:null}
                 </div>
