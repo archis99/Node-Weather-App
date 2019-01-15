@@ -22,7 +22,6 @@ class Search extends React.Component {
         fetch(`/fetchWeatherDetails?address=${this.state.searchValue}`)
         .then((response) => {
             response.json().then((data) => {
-                console.log(data);
                 this.setState({
                     weatherComponent: true,
                     place: data.Place,
