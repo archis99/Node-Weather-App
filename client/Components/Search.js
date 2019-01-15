@@ -14,7 +14,8 @@ class Search extends React.Component {
             feelsLike: null,
             humidity: null,
             windSpeed: null,
-            currCondition: null
+            currCondition: null,
+            error: null
         };
     }
 
@@ -27,16 +28,26 @@ class Search extends React.Component {
         fetch(`/fetchWeatherDetails?address=${this.state.searchValue}`)
         .then((response) => {
             response.json().then((data) => {
-                this.setState({
-                    weatherComponent: true,
-                    place: data.Place,
-                    currTemp: data["Current Temperature(deg.C)"],
-                    feelsLike: data["Feels Like(deg.C)"],
-                    humidity: data.Humidity,
-                    windSpeed: data["Wind Speed(m/s)"],
-                    currCondition: data["Current Condition"],
-                    spinners: false
-                });
+                if (!data.Error) {
+                    this.setState({
+                        weatherComponent: true,
+                        place: data.Place,
+                        currTemp: data["Current Temperature(deg.C)"],
+                        feelsLike: data["Feels Like(deg.C)"],
+                        humidity: data.Humidity,
+                        windSpeed: data["Wind Speed(m/s)"],
+                        currCondition: data["Current Condition"],
+                        spinners: false,
+                        error:null
+                    });
+                } else {
+                    this.setState({
+                        weatherComponent: true,
+                        spinners: false,
+                        error: data.Error
+                    });
+                }
+                
             });
         })
         ;
@@ -75,14 +86,14 @@ class Search extends React.Component {
                 <div className="row justify-content-center">
                     {this.state.spinners?
                     <div>
-                        <div class="spinner-grow text-success" role="status">
-                        <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-success" role="status">
+                        <span className="sr-only">Loading...</span>
                             </div>
-                        <div class="spinner-grow text-danger" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-danger" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
-                        <div class="spinner-grow text-warning" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div className="spinner-grow text-warning" role="status">
+                            <span className="sr-only">Loading...</span>
                         </div>
                     </div>:null}
                     {this.state.weatherComponent?
@@ -93,6 +104,7 @@ class Search extends React.Component {
                         humidity={this.state.humidity}
                         windSpeed={this.state.windSpeed}
                         currCondition={this.state.windSpeed}
+                        error={this.state.error}
                     />:null}
                 </div>
                 
