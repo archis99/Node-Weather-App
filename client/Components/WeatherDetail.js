@@ -22,7 +22,7 @@ class WeatherDetail extends React.Component {
                 <h3 className="card-header">Details</h3>
                 <div className="card-body">
                     
-                    {this.state.displayError?<div>Error: {this.props.error}</div>:
+                    {this.state.displayError?<div className="text-danger">Error: {this.props.error}</div>:
                     <div>
                         <div>Place: {this.props.place}</div>
                         <div>Current Temperature(deg.C): {this.props.currTemp}</div>
