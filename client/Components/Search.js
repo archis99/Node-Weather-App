@@ -44,29 +44,39 @@ class Search extends React.Component {
 
     render() {
         return(
-            <div>
-                <form onSubmit={this.fetchWeather.bind(this)}>
-                    <div>
-                        <input 
-                        type="search" 
-                        value={this.state.searchValue} 
-                        onChange={this.updateSearchValue.bind(this)} />
-                    </div>
-                    
-                    <div>
-                        <input type="submit" value="Weather Me" />
-                    </div> 
-                </form>
+            <div id="search">
+                
+                <div className="row justify-content-center">
+                    <form onSubmit={this.fetchWeather.bind(this)}>
+                        <div>
+                            <input 
+                            type="search" 
+                            placeholder="Zipcode or Place name"
+                            value={this.state.searchValue} 
+                            onChange={this.updateSearchValue.bind(this)} />
+                        </div>
+                        
+                        <div className="row justify-content-center">
+                            <input 
+                            type="submit" 
+                            value="Give it a shot!" 
+                            className="btn btn-primary" 
+                            id="submit-border"/>
+                        </div> 
+                    </form>
+                </div>
 
-                {this.state.weatherComponent?
-                <WeatherDetail 
-                    place={this.state.place}
-                    currTemp={this.state.currTemp}
-                    feelsLike={this.state.feelsLike}
-                    humidity={this.state.humidity}
-                    windSpeed={this.state.windSpeed}
-                    currCondition={this.state.windSpeed}
-                />:null}
+                <div className="row justify-content-center">
+                    {this.state.weatherComponent?
+                    <WeatherDetail 
+                        place={this.state.place}
+                        currTemp={this.state.currTemp}
+                        feelsLike={this.state.feelsLike}
+                        humidity={this.state.humidity}
+                        windSpeed={this.state.windSpeed}
+                        currCondition={this.state.windSpeed}
+                    />:null}
+                </div>
                 
 
             </div>
