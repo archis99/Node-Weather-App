@@ -13,6 +13,7 @@ module.exports = (res, response) => {
         res.end(err_msg);
     } else if (response.data.results !== undefined) {
         formattedAddress = response.data.results[0].formatted_address;
+        addr = formattedAddress;
         //Using ES6 Object Destructuring
         let {lat, lng} = response.data.results[0].geometry.location;
         let darkSky = axios.get(`${url.DARKSKY_API}${keys.weatherKey}/${lat},${lng}?exclude=hourly,daily&units=si`);
