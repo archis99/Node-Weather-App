@@ -1,12 +1,22 @@
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: './client/index.js',
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+     title: 'Weather Me',
+     template: 'template.html'
+    }),
+  ],
   output: {
-    filename: 'bundle.js',
+    filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist')
   },
-  mode: 'development',
+  mode: 'production',
   module: {
     rules: [
       {
@@ -25,10 +35,10 @@ module.exports = {
         }, {
           loader: 'postcss-loader', // Run postcss actions
           options: {
-            plugins: function () { // postcss plugins, can be exported to postcss.config.js
-              return [
-                require('autoprefixer')
-              ];
+            postcssOptions: {
+              plugins: () => { // postcss plugins, can be exported to postcss.config.js
+                [require('autoprefixer')]
+              }
             }
           }
         }, {
@@ -36,5 +46,9 @@ module.exports = {
         }]
       }
     ]
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   }
 };
